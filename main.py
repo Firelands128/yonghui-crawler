@@ -13,8 +13,8 @@ class Crawler:
     baseUrl = 'http://www.yonghui.com.cn/mapi/proajax'
     imageBaseUrl = 'http://www.yonghui.com.cn'
     imageBaseFolder = 'images'
-    openedFolder = '已开业门店'
-    buildingFolder = '筹建中门店'
+    opened = '已开业门店'
+    building = '筹建中门店'
 
     region = {
         '华东地区': 357882,
@@ -119,9 +119,9 @@ class Crawler:
             title = storeXml.find('h1').text.strip()
             print('Extract information from store {}'.format(title))
             if len(columns) == 7:
-                folder = Crawler.openedFolder
+                folder = Crawler.opened
             elif len(columns) == 4:
-                folder = Crawler.buildingFolder
+                folder = Crawler.building
             else:
                 folder = ''
             imagePath = os.path.join(Crawler.imageBaseFolder, folder, title + '.' + imageSrc.rsplit('.', 1)[1])
@@ -175,19 +175,19 @@ class Crawler:
     def main(self):
         if not os.path.exists(Crawler.imageBaseFolder):
             os.mkdir(Crawler.imageBaseFolder)
-        if not os.path.exists(os.path.join(Crawler.imageBaseFolder, Crawler.openedFolder)):
-            os.mkdir(os.path.join(Crawler.imageBaseFolder, Crawler.openedFolder))
-        if not os.path.exists(os.path.join(Crawler.imageBaseFolder, Crawler.buildingFolder)):
-            os.mkdir(os.path.join(Crawler.imageBaseFolder, Crawler.buildingFolder))
+        if not os.path.exists(os.path.join(Crawler.imageBaseFolder, Crawler.opened)):
+            os.mkdir(os.path.join(Crawler.imageBaseFolder, Crawler.opened))
+        if not os.path.exists(os.path.join(Crawler.imageBaseFolder, Crawler.building)):
+            os.mkdir(os.path.join(Crawler.imageBaseFolder, Crawler.building))
 
         openedStores = self.extractStores(2)
         buildingStores = self.extractStores(3)
 
         writer = pd.ExcelWriter('result.xlsx')
         df = pd.DataFrame(openedStores, columns=Crawler.openedColumns)
-        df.to_excel(writer, sheet_name=Crawler.openedFolder)
+        df.to_excel(writer, sheet_name=Crawler.opened)
         df = pd.DataFrame(buildingStores, columns=Crawler.buildingColumns)
-        df.to_excel(writer, sheet_name=Crawler.buildingFolder)
+        df.to_excel(writer, sheet_name=Crawler.building)
         writer.save()
         print('Extracted information from {} opened stores and {} building stores'.format(len(openedStores), len(buildingStores)))
 
