@@ -1,8 +1,7 @@
-### Crawler practice
+### Crawler practice for extracting yonghui supermarket information
 
-#### Prerequisite
+#### Dependencies
 ```text
-- python3.7
 - urllib3
 - beautifulsoup4
 - validators
@@ -10,7 +9,14 @@
 - openpyxl
 ```
 
-#### Install
+#### Create Virtual Environment (Optional)
+```shell script
+pip install virtualenv
+virtualenv venv
+source ./venv/bin/activate
+```
+
+#### Install Dependencies
 ```shell script
 pip install -r requirements.txt
 ```
