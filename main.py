@@ -117,6 +117,7 @@ class Crawler:
                 imageSrc = imageBaseUrl + imageSrc
 
             title = storeXml.find('h1').text.strip()
+            print('Extract information from store {}'.format(title))
             if len(columns) == 7:
                 folder = Crawler.openedFolder
             elif len(columns) == 4:
@@ -164,7 +165,6 @@ class Crawler:
                 id = Crawler.regionProvinces[region][province]
                 page = 0
                 rawData, pageNum = self.request(act, id, page, keyword)
-
                 stores.extend(self.extractInfo(region, province, rawData, Crawler.imageBaseUrl, columns))
 
                 for p in range(1, pageNum):
@@ -183,14 +183,18 @@ class Crawler:
         openedStores = self.extractStores(2)
         buildingStores = self.extractStores(3)
 
+        writer = pd.ExcelWriter('result.xlsx')
         df = pd.DataFrame(openedStores, columns=Crawler.openedColumns)
-        df.to_excel('已开业门店.xlsx')
+        df.to_excel(writer, sheet_name=Crawler.openedFolder)
         df = pd.DataFrame(buildingStores, columns=Crawler.buildingColumns)
-        df.to_excel('筹建中门店.xlsx')
-        print('Extracted information from {} stores'.format(len(openedStores) + len(buildingStores)))
+        df.to_excel(writer, sheet_name=Crawler.buildingFolder)
+        writer.save()
+        print('Extracted information from {} opened stores and {} building stores'.format(len(openedStores), len(buildingStores)))
 
 
 if __name__ == '__main__':
+    startTime = time.time()
     crawler = Crawler()
     crawler.main()
-    print('Time consumption: {} seconds'.format(time.process_time()))
+    print('Program running time: {} seconds'.format(time.process_time()))
+    print('Total running time: {} seconds'.format(time.time() - startTime))
