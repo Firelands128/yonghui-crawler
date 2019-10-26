@@ -13,7 +13,16 @@
 ```shell script
 pip install virtualenv
 virtualenv venv
+```
+
+#### Activate Virtual Environment (Optional)
+- Unix & Linux
+```shell script
 source ./venv/bin/activate
+```
+- Windows
+```shell script
+.\venv\Scripts\activate.bat
 ```
 
 #### Install Dependencies
