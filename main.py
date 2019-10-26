@@ -163,11 +163,11 @@ class Crawler:
         for region in Crawler.regionProvinces:
             for province in Crawler.regionProvinces[region]:
                 id = Crawler.regionProvinces[region][province]
-                page = 0
+                page = 1
                 rawData, pageNum = self.request(act, id, page, keyword)
                 stores.extend(self.extractInfo(region, province, rawData, Crawler.imageBaseUrl, columns))
 
-                for p in range(1, pageNum):
+                for p in range(2, pageNum + 1):
                     rawData, _ = self.request(act, id, p, keyword)
                     stores.extend(self.extractInfo(region, province, rawData, Crawler.imageBaseUrl, columns))
         return stores
